@@ -1,0 +1,12 @@
+{
+    "modules": [
+        "bastardkb/lcd",
+        "bastardkb/dilemma_sync",
+        "bastardkb/argos"
+    ],
+    "macros": [
+        [
+            "Hello world!\n"
+        ]
+    ]
+}
