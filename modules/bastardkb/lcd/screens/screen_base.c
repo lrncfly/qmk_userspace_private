@@ -152,16 +152,28 @@ static void update_layer_name(lv_obj_t* obj, const dilemma_status_t current_stat
         switch (current_status.layer) {
             case 0:
             default:
-                lv_label_set_text(obj, "LAYER: BASE");
+                lv_label_set_text(obj, "LAYER: Base");
                 break;
             case 1:
-                lv_label_set_text(obj, "LAYER: LOWER");
+                lv_label_set_text(obj, "LAYER: Function");
                 break;
             case 2:
-                lv_label_set_text(obj, "LAYER: RAISE");
+                lv_label_set_text(obj, "LAYER: Navigation");
                 break;
             case 3:
-                lv_label_set_text(obj, "LAYER: MOUSE");
+                lv_label_set_text(obj, "LAYER: Media");
+                break;
+            case 4:
+                lv_label_set_text(obj, "LAYER: Pointer");
+                break;
+            case 5:
+                lv_label_set_text(obj, "LAYER: Numeric");
+                break;
+            case 6:
+                lv_label_set_text(obj, "LAYER: Symbols");
+                break;
+            case 7:
+                lv_label_set_text(obj, "LAYER: 7");
                 break;
         }
     }
