@@ -56,16 +56,10 @@ combo_t key_combos[] = {
 #define ESC_MED LT(LAYER_MEDIA, KC_ESC)
 #define SPC_NAV LT(LAYER_NAVIGATION, KC_SPC)
 #define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
-#define TAB_NAV LT(LAYER_NAVIGATION, KC_TAB)
 #define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
 #define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
-#define PT_Z LT(LAYER_POINTER, KC_Z)
-#define PT_SLSH LT(LAYER_POINTER, KC_SLSH)
-#define ESC_MED LT(LAYER_MEDIA, KC_ESC)
-#define SPC_NAV LT(LAYER_NAVIGATION, KC_SPC)
-#define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
-#define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
-#define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
+#define LCD_P LT(LAYER_LCD, KC_P)
+#define LCD_Q LT(LAYER_LCD, KC_Q)
 #define SPC_NUM LT(LAYER_NUMERAL, KC_SPC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
@@ -81,18 +75,18 @@ combo_t key_combos[] = {
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
 #define LAYOUT_LAYER_BASE                                                                     \
-       KC_B,    KC_W,    KC_P,    KC_O,    KC_QUOT,    KC_DOT,    KC_V,    KC_D,    KC_L,    KC_J, \
-       KC_A,    KC_U,    KC_I,    KC_E,    KC_COMM,    KC_C,    KC_T,    KC_S,    KC_R, KC_N, \
-       KC_Z,    KC_Y,    KC_X,    KC_SLSH,    KC_K,    KC_M,    KC_Q, KC_G,  KC_H, KC_F, \
-                      MO(LAYER_LCD), ESC_MED, TAB_NAV, SPC_NUM, ENT_SYM, MO(LAYER_LCD)
+       LCD_Q, KC_W, KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,          KC_I,   KC_O,   LCD_P, \
+       KC_A,  KC_S, KC_D,    KC_F,    KC_G,    KC_H,    KC_J,          KC_K,   KC_L, KC_QUOT, \
+       KC_Z,  KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,       KC_COMM, KC_DOT, KC_SLSH, \
+                 ESC_MED, TAB_FUN, SPC_NAV, ENT_SYM, BSP_NUM, LGUI_T(KC_DEL)
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-#define ______________HOME_ROW_GACS_L______________ KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL, XXXXXXX
-#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LCTL, KC_LSFT, KC_LALT, KC_LGUI
+#define ______________HOME_ROW_GACS_L______________ XXXXXXX, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX
+#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LSFT, KC_LCTL, KC_LALT, XXXXXXX
 
 /*
- * Layers used on the Charybdis Nano.
+ * Layers used on the Dilemma.
  *
  * These layers started off heavily inspired by the Miryoku layout, but trimmed
  * down and tailored for a stock experience that is meant to be fundation for
@@ -113,26 +107,26 @@ combo_t key_combos[] = {
     _______________DEAD_HALF_ROW_______________, KC_PSCR,   KC_F7,   KC_F8,   KC_F9,  KC_F12, \
     ______________HOME_ROW_GACS_L______________, KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, \
     _______________DEAD_HALF_ROW_______________, KC_PAUS,   KC_F1,   KC_F2,   KC_F3,  KC_F10, \
-                      XXXXXXX, XXXXXXX, _______, XXXXXXX, XXXXXXX, _______
+                      XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 
   /**
    * \brief Media layer.
-   *   
+   *
    * Tertiary left- and right-hand layer is media and RGB control.  This layer is
    * symmetrical to accomodate the left- and right-hand trackball.
    */
 #define LAYOUT_LAYER_MEDIA                                                                    \
-    XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, \
+    XXXXXXX, RM_PREV, RM_TOGG, RM_NEXT, XXXXXXX, XXXXXXX, RM_PREV, RM_TOGG, RM_NEXT, XXXXXXX, \
     KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, \
-    XXXXXXX, XXXXXXX, XXXXXXX,  EE_CLR, QK_BOOT, QK_BOOT,  EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, \
-                      _______, KC_MPLY, KC_MSTP, KC_MSTP, KC_MPLY, _______
+    _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
+                      _______, KC_MPLY, KC_MSTP, KC_MSTP, KC_MPLY, KC_MUTE
 
    /** \brief Mouse emulation and pointer functions. */
 #define LAYOUT_LAYER_POINTER                                                                  \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, S_D_MOD, S_D_MOD, DPI_MOD, XXXXXXX,  EE_CLR, QK_BOOT, \
     ______________HOME_ROW_GACS_L______________, ______________HOME_ROW_GACS_R______________, \
     _______, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, _______, \
-                      MS_BTN2, MS_BTN1, MS_BTN3, MS_BTN3, MS_BTN1, _______
+                      MS_BTN3, MS_BTN2, MS_BTN1, MS_BTN1, MS_BTN2, MS_BTN3
 
 /**
  * \brief Navigation layer.
@@ -143,16 +137,17 @@ combo_t key_combos[] = {
  * base layer to avoid having to layer change mid edit and to enable auto-repeat.
  */
 #define LAYOUT_LAYER_NAVIGATION                                                               \
-    _______, _______, LCDPR, LCDNE, _______, _______________DEAD_HALF_ROW_______________, \
-    ______________HOME_ROW_GACS_L______________, KC_BSPC, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT, \
-    _______________DEAD_HALF_ROW_______________,  KC_DEL, KC_HOME, KC_PGDN, KC_PGUP,  KC_END, \
-                      XXXXXXX, _______, XXXXXXX,  KC_ENT, KC_ENT, _______
+    _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
+    ______________HOME_ROW_GACS_L______________, CW_TOGG, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, \
+    _______________DEAD_HALF_ROW_______________,  KC_INS, KC_HOME, KC_PGUP, KC_PGDN,  KC_END, \
+                      XXXXXXX, XXXXXXX, _______,  XXXXXXX, XXXXXXX, XXXXXXX
 
-#define LAYOUT_LAYER_LCD                                                             \
-    QK_REG, _______, _______, _______, QK_HELP, _______________DEAD_HALF_ROW_______________, \
-    _______, _______, LCDPR, LCDNE, _______ , _______________DEAD_HALF_ROW_______________, \
-    _______________DEAD_HALF_ROW_______________,  _______________DEAD_HALF_ROW_______________, \
-                      XXXXXXX, _______, XXXXXXX,  _______, _______, _______
+#define LAYOUT_LAYER_LCD                                                                      \
+    _______, XXXXXXX, XXXXXXX,  QK_REG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
+    XXXXXXX, XXXXXXX,   LCDPR,   LCDNE, XXXXXXX, QK_HELP, XXXXXXX,   LCDPR,   LCDNE, XXXXXXX, \
+    _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
+                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+
  /**
   * \brief Numeral layout.
   *
@@ -164,7 +159,7 @@ combo_t key_combos[] = {
     KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC, _______________DEAD_HALF_ROW_______________, \
     KC_SCLN,    KC_4,    KC_5,    KC_6,  KC_EQL, ______________HOME_ROW_GACS_R______________, \
     KC_GRV,     KC_1,    KC_2,    KC_3, KC_BSLS, _______________DEAD_HALF_ROW_______________, \
-                       KC_DOT,    KC_MINS, KC_0, XXXXXXX, _______, _______
+                         KC_0,  KC_DOT, KC_MINS, XXXXXXX, _______, XXXXXXX
 
   /**
    * \brief Symbols layer.
@@ -177,7 +172,7 @@ combo_t key_combos[] = {
     KC_LCBR, KC_AMPR, KC_ASTR, KC_LPRN, KC_RCBR, _______________DEAD_HALF_ROW_______________, \
     KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, ______________HOME_ROW_GACS_R______________, \
     KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, _______________DEAD_HALF_ROW_______________, \
-                      KC_UNDS, KC_LPRN, KC_RPRN, _______, XXXXXXX, _______
+                      KC_RPRN,  KC_GRV, KC_UNDS, _______, XXXXXXX, XXXXXXX
 
    /**
     * \brief Add Home Row mod to a layout.
@@ -189,14 +184,14 @@ combo_t key_combos[] = {
     *
     *     HOME_ROW_MOD_GACS(LAYER_ALPHAS_QWERTY)
     */
-#define _HOME_ROW_MOD_GACS(                                            \
-    L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
-    L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
-    ...)                                                               \
-             L00,         L01,         L02,         L03,         L04,  \
-             R05,         R06,         R07,         R08,         R09,  \
-      LGUI_T(L10), LALT_T(L11), RSFT_T(L12), LCTL_T(L13),        L14,  \
-             R15,  LCTL_T(R16), RSFT_T(R17), LALT_T(R18), RGUI_T(R19), \
+#define _HOME_ROW_MOD_GACS(                                   \
+    L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,         \
+    L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,         \
+    ...)                                                      \
+             L00,         L01,         L02,         L03, L04, \
+             R05,         R06,         R07,         R08, R09, \
+             L10, LALT_T(L11), RSFT_T(L12), LCTL_T(L13), L14, \
+             R15, LCTL_T(R16), RSFT_T(R17), LALT_T(R18), R19, \
       __VA_ARGS__
 #define HOME_ROW_MOD_GACS(...) _HOME_ROW_MOD_GACS(__VA_ARGS__)
 
