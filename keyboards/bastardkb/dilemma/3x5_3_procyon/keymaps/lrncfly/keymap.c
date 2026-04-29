@@ -49,6 +49,8 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 #define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
 #define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
 #define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
+#define LCD_P LT(LAYER_LCD, KC_P)
+#define LCD_Q LT(LAYER_LCD, KC_Q)
 #define SPC_NUM LT(LAYER_NUMERAL, KC_SPC)
 #define _L_LCD(KC) LT(LAYER_LCD, KC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
