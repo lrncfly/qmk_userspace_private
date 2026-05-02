@@ -35,20 +35,10 @@ enum custom_keycodes {
     QK_HELP
 };
 
-const uint16_t PROGMEM combo1[] = { RSFT_T(KC_I), LCTL_T(KC_E), COMBO_END };
-const uint16_t PROGMEM combo2[] = { RSFT_T(KC_S), LCTL_T(KC_T), COMBO_END };
-const uint16_t PROGMEM combo3[] = { KC_P, KC_O, COMBO_END };
-const uint16_t PROGMEM combo4[] = { KC_V, KC_D, COMBO_END };
-const uint16_t PROGMEM combo5[] = { KC_SLSH, KC_X, COMBO_END };
-const uint16_t PROGMEM combo6[] = { KC_Q, KC_G, COMBO_END };
+const uint16_t PROGMEM combo4[] = { KC_V, KC_B, COMBO_END };
 
 combo_t key_combos[] = {
-    COMBO(combo1, KC_LPRN),
-    COMBO(combo2, KC_RPRN),
-    COMBO(combo3, KC_LBRC),
-    COMBO(combo4, KC_RBRC),
-    COMBO(combo5, LSFT(KC_LBRC)),
-    COMBO(combo6, LSFT(KC_RBRC)),
+    COMBO(combo4, KC_RBRC)
 };
 // Automatically enable sniping-mode on the pointer layer.
 // #define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_POINTER
@@ -138,8 +128,8 @@ combo_t key_combos[] = {
 #define LAYOUT_LAYER_NAVIGATION                                                               \
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
     ______________HOME_ROW_GACS_L______________, CW_TOGG, KC_LEFT,   KC_UP, KC_DOWN, KC_RGHT, \
-    _______________DEAD_HALF_ROW_______________,  KC_INS, KC_HOME, KC_PGUP, KC_PGDN,  KC_END, \
-                      XXXXXXX, XXXXXXX, _______,  XXXXXXX, XXXXXXX, XXXXXXX
+    KC_UNDO, KC_CUT, KC_COPY, KC_PASTE, XXXXXXX,  KC_INS, KC_HOME, KC_PGUP, KC_PGDN,  KC_END, \
+                     XXXXXXX,  XXXXXXX, _______,  XXXXXXX, XXXXXXX, XXXXXXX
 
 #define LAYOUT_LAYER_LCD                                                                      \
     _______, XXXXXXX, XXXXXXX,  QK_REG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
