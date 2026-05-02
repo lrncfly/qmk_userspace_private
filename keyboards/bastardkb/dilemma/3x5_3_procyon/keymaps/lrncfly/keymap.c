@@ -49,8 +49,6 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 #define TAB_FUN LT(LAYER_FUNCTION, KC_TAB)
 #define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
 #define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
-#define LCD_P LT(LAYER_LCD, KC_P)
-#define LCD_Q LT(LAYER_LCD, KC_Q)
 #define SPC_NUM LT(LAYER_NUMERAL, KC_SPC)
 #define _L_LCD(KC) LT(LAYER_LCD, KC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
@@ -74,8 +72,8 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-#define ______________HOME_ROW_GACS_L______________ XXXXXXX, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX
-#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LSFT, KC_LCTL, KC_LALT, XXXXXXX
+#define ______________HOME_ROW_GACS_L______________ XXXXXXX, KC_LALT, KC_LSFT, KC_LCTL, XXXXXXX
+#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LCTL, KC_LSFT, KC_LALT, XXXXXXX
 
 /*
  * Layers used on the Dilemma.
@@ -226,6 +224,30 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
      _L_LCD(L00), L01, L02, L03, L04, R05, R06, R07, R08, _L_LCD(R09), \
              L10, L11, L12, L13, L14, R15, R16, R17, R18,         R19, \
              L20, L21, L22, L23, L24, R25, R26, R27, R28,         R29, \
+      __VA_ARGS__
+#define LCD_MOD(...) _LCD_MOD(__VA_ARGS__)
+
+    /**
+     * \brief Add lcd layer keys to a layout.
+     *
+     * Expects a 10-key per row layout.  The layout passed in parameter must contain
+     * at least 30 keycodes.
+     *
+     * This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
+     *
+     *     LCDMOD(LAYER_ALPHAS_QWERTY)
+     */
+#define _LCD_MOD(                                                  \
+    L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
+    L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
+    L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                  \
+    ...)                                                               \
+     _L_LCD(L00),         L01,         L02,         L03,         L04,  \
+             R05,         R06,         R07,         R08, _L_LCD(R09),  \
+             L10,         L11,         L12,         L13,         L14,  \
+             R15,         R16,         R17,         R18,         R19,  \
+             L20,         L21,         L22,         L23,         L24,  \
+             R25,         R26,         R27,         R28,         R29, \
       __VA_ARGS__
 #define LCD_MOD(...) _LCD_MOD(__VA_ARGS__)
 
