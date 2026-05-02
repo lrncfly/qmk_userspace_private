@@ -63,8 +63,8 @@ void init_screen_base(void) {
 
     /* ----- Widgets ----- */
     widgets[0] = (obj_update_dilemma_lcd_status_t){ ui_create_layer_label(cont), &update_layer_name, };
-    widgets[1] = (obj_update_dilemma_lcd_status_t){ ui_create_mod_button(cont, "SHFT", true, MOD_MASK_SHIFT), &update_mod_shift, };
-    widgets[2] = (obj_update_dilemma_lcd_status_t){ ui_create_mod_button(cont, "ALT", false, MOD_MASK_ALT), &update_mod_alt, };
+    widgets[1] = (obj_update_dilemma_lcd_status_t){ ui_create_mod_button(cont, "ALT", true, MOD_MASK_ALT), &update_mod_alt, };
+    widgets[2] = (obj_update_dilemma_lcd_status_t){ ui_create_mod_button(cont, "SHFT", false, MOD_MASK_SHIFT), &update_mod_shift, };
     widgets[3] = (obj_update_dilemma_lcd_status_t){ ui_create_mod_button(cont, "CTRL", false, MOD_MASK_CTRL), &update_mod_ctrl, };
     widgets[4] = (obj_update_dilemma_lcd_status_t){ ui_create_mod_button(cont, "GUI", false, MOD_MASK_GUI), &update_mod_gui, };
     ui_create_line_separator(cont, 1, 3);
