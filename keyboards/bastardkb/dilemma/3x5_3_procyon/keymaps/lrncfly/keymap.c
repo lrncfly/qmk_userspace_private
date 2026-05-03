@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include QMK_KEYBOARD_H
 #include "config.h"
 #include "layers.h"
@@ -238,17 +237,15 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
      *
      *     LCDMOD(LAYER_ALPHAS_QWERTY)
      */
-#define _LCD_MOD(                                                  \
+
+#define _LCD_MOD(                                                      \
     L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
     L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                  \
     ...)                                                               \
-     _L_LCD(L00),         L01,         L02,         L03,         L04,  \
-             R05,         R06,         R07,         R08, _L_LCD(R09),  \
-             L10,         L11,         L12,         L13,         L14,  \
-             R15,         R16,         R17,         R18,         R19,  \
-             L20,         L21,         L22,         L23,         L24,  \
-             R25,         R26,         R27,         R28,         R29, \
+     _L_LCD(L00), L01, L02, L03, L04, R05, R06, R07, R08, _L_LCD(R09), \
+             L10, L11, L12, L13, L14, R15, R16, R17, R18,         R19, \
+             L20, L21, L22, L23, L24, R25, R26, R27, R28,         R29, \
       __VA_ARGS__
 #define LCD_MOD(...) _LCD_MOD(__VA_ARGS__)
 
