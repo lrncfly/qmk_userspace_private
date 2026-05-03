@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 #include "config.h"
 #include QMK_KEYBOARD_H
 
@@ -30,16 +29,11 @@ enum dilemma_keymap_layers {
     LAYER_LCD,
 };
 
-enum custom_keycodes {
-    QK_REG = SAFE_RANGE,
-    QK_HELP
-};
+enum custom_keycodes { QK_REG = SAFE_RANGE, QK_HELP };
 
-const uint16_t PROGMEM combo4[] = { KC_V, KC_B, COMBO_END };
+const uint16_t PROGMEM combo4[] = {KC_V, KC_B, COMBO_END};
 
-combo_t key_combos[] = {
-    COMBO(combo4, KC_RBRC)
-};
+combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 // Automatically enable sniping-mode on the pointer layer.
 // #define DILEMMA_AUTO_SNIPING_ON_LAYER LAYER_POINTER
 
@@ -53,10 +47,10 @@ combo_t key_combos[] = {
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
 #ifndef POINTING_DEVICE_ENABLE
-#    define DRGSCRL KC_NO
-#    define DPI_MOD KC_NO
-#    define S_D_MOD KC_NO
-#    define SNIPING KC_NO
+#define DRGSCRL KC_NO
+#define DPI_MOD KC_NO
+#define S_D_MOD KC_NO
+#define SNIPING KC_NO
 #endif // !POINTING_DEVICE_ENABLE
 
 #include "keymap.h"
@@ -194,17 +188,14 @@ combo_t key_combos[] = {
      *
      *     POINTER_MOD(LAYER_ALPHAS_QWERTY)
      */
-#define _POINTER_MOD(                                                  \
-    L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
-    L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
-    L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                  \
-    ...)                                                               \
-             L00,         L01,         L02,         L03,         L04,  \
-             R05,         R06,         R07,         R08,         R09,  \
-             L10,         L11,         L12,         L13,         L14,  \
-             R15,         R16,         R17,         R18,         R19,  \
-      _L_PTR(L20),        L21,         L22,         L23,         L24,  \
-             R25,         R26,         R27,         R28,  _L_PTR(R29), \
+#define _POINTER_MOD(                                                   \
+    L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                   \
+    L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                   \
+    L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                   \
+    ...)                                                                \
+              L00, L01, L02, L03, L04, R05, R06, R07, R08,        R09,  \
+              L10, L11, L12, L13, L14, R15, R16, R17, R18,        R19,  \
+      _L_PTR(L20), L21, L22, L23, L24, R25, R26, R27, R28, _L_PTR(R29), \
       __VA_ARGS__
 #define POINTER_MOD(...) _POINTER_MOD(__VA_ARGS__)
 
@@ -218,50 +209,41 @@ combo_t key_combos[] = {
      *
      *     LCDMOD(LAYER_ALPHAS_QWERTY)
      */
-#define _LCD_MOD(                                                  \
+
+#define _LCD_MOD(                                                      \
     L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
     L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                  \
     ...)                                                               \
-     _L_LCD(L00),         L01,         L02,         L03,         L04,  \
-             R05,         R06,         R07,         R08, _L_LCD(R09),  \
-             L10,         L11,         L12,         L13,         L14,  \
-             R15,         R16,         R17,         R18,         R19,  \
-             L20,         L21,         L22,         L23,         L24,  \
-             R25,         R26,         R27,         R28,         R29, \
+     _L_LCD(L00), L01, L02, L03, L04, R05, R06, R07, R08, _L_LCD(R09), \
+             L10, L11, L12, L13, L14, R15, R16, R17, R18,         R19, \
+             L20, L21, L22, L23, L24, R25, R26, R27, R28,         R29, \
       __VA_ARGS__
 #define LCD_MOD(...) _LCD_MOD(__VA_ARGS__)
 
 #define LAYOUT_wrapper(...) LAYOUT_split_3x5_3(__VA_ARGS__)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [LAYER_BASE] = LAYOUT_wrapper(
-    LCD_MOD(
-        POINTER_MOD(
-            HOME_ROW_MOD_GACS(
-                LAYOUT_LAYER_BASE
-            )
-        )
-    )
-  ),
-  [LAYER_FUNCTION] = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
-  [LAYER_NAVIGATION] = LAYOUT_wrapper(LAYOUT_LAYER_NAVIGATION),
-  [LAYER_MEDIA] = LAYOUT_wrapper(LAYOUT_LAYER_MEDIA),
-  [LAYER_NUMERAL] = LAYOUT_wrapper(LAYOUT_LAYER_NUMERAL),
-  [LAYER_POINTER] = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
-  [LAYER_SYMBOLS] = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
-  [LAYER_LCD] = LAYOUT_wrapper(LAYOUT_LAYER_LCD),
+    [LAYER_BASE]       = LAYOUT_wrapper(LCD_MOD(POINTER_MOD(HOME_ROW_MOD_GACS(LAYOUT_LAYER_BASE)))),
+    [LAYER_FUNCTION]   = LAYOUT_wrapper(LAYOUT_LAYER_FUNCTION),
+    [LAYER_NAVIGATION] = LAYOUT_wrapper(LAYOUT_LAYER_NAVIGATION),
+    [LAYER_MEDIA]      = LAYOUT_wrapper(LAYOUT_LAYER_MEDIA),
+    [LAYER_NUMERAL]    = LAYOUT_wrapper(LAYOUT_LAYER_NUMERAL),
+    [LAYER_POINTER]    = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
+    [LAYER_SYMBOLS]    = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
+    [LAYER_LCD]        = LAYOUT_wrapper(LAYOUT_LAYER_LCD),
 };
-// clang-format on
 
+// clang-format on
 #ifdef POINTING_DEVICE_ENABLE
-#    ifdef DILEMMA_AUTO_SNIPING_ON_LAYER
+#ifdef DILEMMA_AUTO_SNIPING_ON_LAYER
 layer_state_t layer_state_set_user(layer_state_t state) {
-    dilemma_set_pointer_sniping_enabled(layer_state_cmp(state, DILEMMA_AUTO_SNIPING_ON_LAYER));
+    dilemma_set_pointer_sniping_enabled(
+        layer_state_cmp(state, DILEMMA_AUTO_SNIPING_ON_LAYER));
     return state;
 }
-#    endif // DILEMMA_AUTO_SNIPING_ON_LAYER
-#endif     // POINTING_DEVICE_ENABLE
+#endif // DILEMMA_AUTO_SNIPING_ON_LAYER
+#endif // POINTING_DEVICE_ENABLE
 
 #ifdef ENCODER_MAP_ENABLE
 // clang-format off
@@ -274,22 +256,24 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [LAYER_NUMERAL]    = {ENCODER_CCW_CW(RM_VALD, RM_VALU),  ENCODER_CCW_CW(RM_SPDD, RM_SPDU)},
     [LAYER_SYMBOLS]    = {ENCODER_CCW_CW(RM_PREV, RM_NEXT),  ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
 };
+// clang-format on
 
-bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case QK_REG:
-            if (record->event.pressed) {
-                SEND_STRING_DELAY("Regards,\nQuentin Lebastard\nBastard Keyboards", 5);
-            }
-            break;
-        case QK_HELP:
-            if (record->event.pressed) {
-                SEND_STRING_DELAY("I hope this helps, let me know if there's anything else!", 5);
-            }
-            break;
+    case QK_REG:
+        if (record->event.pressed) {
+            SEND_STRING_DELAY("Regards,\nQuentin Lebastard\nBastard Keyboards",
+                              5);
+        }
+        break;
+    case QK_HELP:
+        if (record->event.pressed) {
+            SEND_STRING_DELAY(
+                "I hope this helps, let me know if there's anything else!", 5);
+        }
+        break;
     }
     return true;
 };
 
-// clang-format on
 #endif // ENCODER_MAP_ENABLE
