@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "config.h"
 #include QMK_KEYBOARD_H
 
@@ -78,33 +79,33 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
  * See https://github.com/manna-harbour/miryoku for the original layout.
  */
 
- /**
-  * \brief Function layer.
-  *
-  * Secondary right-hand layer has function keys mirroring the numerals on the
-  * primary layer with extras on the pinkie column, plus system keys on the inner
-  * column. App is on the tertiary thumb key and other thumb keys are duplicated
-  * from the base layer to enable auto-repeat.
-  */
+/**
+ * \brief Function layer.
+ *
+ * Secondary right-hand layer has function keys mirroring the numerals on the
+ * primary layer with extras on the pinkie column, plus system keys on the inner
+ * column. App is on the tertiary thumb key and other thumb keys are duplicated
+ * from the base layer to enable auto-repeat.
+ */
 #define LAYOUT_LAYER_FUNCTION                                                                 \
     _______________DEAD_HALF_ROW_______________, KC_PSCR,   KC_F7,   KC_F8,   KC_F9,  KC_F12, \
     ______________HOME_ROW_GACS_L______________, KC_SCRL,   KC_F4,   KC_F5,   KC_F6,  KC_F11, \
     _______________DEAD_HALF_ROW_______________, KC_PAUS,   KC_F1,   KC_F2,   KC_F3,  KC_F10, \
                       XXXXXXX, _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 
-  /**
-   * \brief Media layer.
-   *
-   * Tertiary left- and right-hand layer is media and RGB control.  This layer is
-   * symmetrical to accomodate the left- and right-hand trackball.
-   */
+/**
+* \brief Media layer.
+*
+* Tertiary left- and right-hand layer is media and RGB control.  This layer is
+* symmetrical to accomodate the left- and right-hand trackball.
+*/
 #define LAYOUT_LAYER_MEDIA                                                                    \
     XXXXXXX, RM_PREV, RM_TOGG, RM_NEXT, XXXXXXX, XXXXXXX, RM_PREV, RM_TOGG, RM_NEXT, XXXXXXX, \
     KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, \
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
                       _______, KC_MPLY, KC_MSTP, KC_MSTP, KC_MPLY, KC_MUTE
 
-   /** \brief Mouse emulation and pointer functions. */
+/** \brief Mouse emulation and pointer functions. */
 #define LAYOUT_LAYER_POINTER                                                                  \
     QK_BOOT,  EE_CLR, XXXXXXX, DPI_MOD, S_D_MOD, S_D_MOD, DPI_MOD, XXXXXXX,  EE_CLR, QK_BOOT, \
     ______________HOME_ROW_GACS_L______________, ______________HOME_ROW_GACS_R______________, \
@@ -131,42 +132,42 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
                       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 
- /**
-  * \brief Numeral layout.
-  *
-  * Primary left-hand layer (right home thumb) is numerals and symbols. Numerals
-  * are in the standard numpad locations with symbols in the remaining positions.
-  * `KC_DOT` is duplicated from the base layer.
-  */
+/**
+* \brief Numeral layout.
+*
+* Primary left-hand layer (right home thumb) is numerals and symbols. Numerals
+* are in the standard numpad locations with symbols in the remaining positions.
+* `KC_DOT` is duplicated from the base layer.
+*/
 #define LAYOUT_LAYER_NUMERAL                                                                  \
     KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC, _______________DEAD_HALF_ROW_______________, \
     KC_SCLN,    KC_4,    KC_5,    KC_6,  KC_EQL, ______________HOME_ROW_GACS_R______________, \
     KC_GRV,     KC_1,    KC_2,    KC_3, KC_BSLS, _______________DEAD_HALF_ROW_______________, \
                          KC_0,  KC_DOT, KC_MINS, XXXXXXX, _______, XXXXXXX
 
-  /**
-   * \brief Symbols layer.
-   *
-   * Secondary left-hand layer has shifted symbols in the same locations to reduce
-   * chording when using mods with shifted symbols. `KC_LPRN` is duplicated next to
-   * `KC_RPRN`.
-   */
+/**
+* \brief Symbols layer.
+*
+* Secondary left-hand layer has shifted symbols in the same locations to reduce
+* chording when using mods with shifted symbols. `KC_LPRN` is duplicated next to
+* `KC_RPRN`.
+*/
 #define LAYOUT_LAYER_SYMBOLS                                                                  \
     KC_LCBR, KC_AMPR, KC_ASTR, KC_LPRN, KC_RCBR, _______________DEAD_HALF_ROW_______________, \
     KC_COLN,  KC_DLR, KC_PERC, KC_CIRC, KC_PLUS, ______________HOME_ROW_GACS_R______________, \
     KC_TILD, KC_EXLM,   KC_AT, KC_HASH, KC_PIPE, _______________DEAD_HALF_ROW_______________, \
                       KC_RPRN,  KC_GRV, KC_UNDS, _______, XXXXXXX, XXXXXXX
 
-   /**
-    * \brief Add Home Row mod to a layout.
-    *
-    * Expects a 10-key per row layout.  Adds support for GACS (Gui, Alt, Ctl, Shift)
-    * home row.  The layout passed in parameter must contain at least 20 keycodes.
-    *
-    * This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
-    *
-    *     HOME_ROW_MOD_GACS(LAYER_ALPHAS_QWERTY)
-    */
+/**
+* \brief Add Home Row mod to a layout.
+*
+* Expects a 10-key per row layout.  Adds support for GACS (Gui, Alt, Ctl, Shift)
+* home row.  The layout passed in parameter must contain at least 20 keycodes.
+*
+* This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
+*
+*     HOME_ROW_MOD_GACS(LAYER_ALPHAS_QWERTY)
+*/
 #define _HOME_ROW_MOD_GACS(                                   \
     L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,         \
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,         \
@@ -178,16 +179,16 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
       __VA_ARGS__
 #define HOME_ROW_MOD_GACS(...) _HOME_ROW_MOD_GACS(__VA_ARGS__)
 
-    /**
-     * \brief Add pointer layer keys to a layout.
-     *
-     * Expects a 10-key per row layout.  The layout passed in parameter must contain
-     * at least 30 keycodes.
-     *
-     * This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
-     *
-     *     POINTER_MOD(LAYER_ALPHAS_QWERTY)
-     */
+/**
+* \brief Add pointer layer keys to a layout.
+*
+* Expects a 10-key per row layout.  The layout passed in parameter must contain
+* at least 30 keycodes.
+*
+* This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
+*
+*     POINTER_MOD(LAYER_ALPHAS_QWERTY)
+*/
 #define _POINTER_MOD(                                                   \
     L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                   \
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                   \
@@ -199,17 +200,16 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
       __VA_ARGS__
 #define POINTER_MOD(...) _POINTER_MOD(__VA_ARGS__)
 
-    /**
-     * \brief Add lcd layer keys to a layout.
-     *
-     * Expects a 10-key per row layout.  The layout passed in parameter must contain
-     * at least 30 keycodes.
-     *
-     * This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
-     *
-     *     LCDMOD(LAYER_ALPHAS_QWERTY)
-     */
-
+/**
+* \brief Add lcd layer keys to a layout.
+*
+* Expects a 10-key per row layout.  The layout passed in parameter must contain
+* at least 30 keycodes.
+*
+* This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
+*
+*     LCDMOD(LAYER_ALPHAS_QWERTY)
+*/
 #define _LCD_MOD(                                                      \
     L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
@@ -257,13 +257,78 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
     [LAYER_SYMBOLS]    = {ENCODER_CCW_CW(RM_PREV, RM_NEXT),  ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
 };
 // clang-format on
+#endif // ENCODER_MAP_ENABLE
+
+// cool custom startup animation
+void matrix_init_user(void) { // Runs boot tasks for keyboard
+    rgblight_enable_noeeprom();
+    // rgblight_mode_noeeprom(RGB_MATRIX_BAND_VAL);
+    // rgblight_set_speed(200);
+    rgblight_sethsv(0, 255, 255);
+
+    // rgblight_enable();
+    // rgblight_sethsv(0,255,255);
+    // rgblight_mode(3);
+};
+
+#ifdef RGB_MATRIX_ENABLE
+// Layer state indicator
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    if (host_keyboard_led_state().caps_lock) {
+        for (int i = 0; i <= led_max; i++) {
+            if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_MODIFIER)) {
+                rgb_matrix_set_color(i, MIN(rgb_matrix_get_val() + 76, 255),
+                                     0x00, 0x00);
+            }
+        }
+    }
+
+    uint8_t layer = get_highest_layer(layer_state);
+    if (layer > 0) {
+        HSV hsv = rgb_matrix_get_hsv();
+        switch (get_highest_layer(layer_state)) {
+        case 1:
+            hsv = (HSV){HSV_BLUE};
+            break;
+        case 2:
+            hsv = (HSV){HSV_AZURE};
+            break;
+        case 3:
+            hsv = (HSV){HSV_ORANGE};
+            break;
+        case 4:
+            hsv = (HSV){HSV_GREEN};
+            break;
+        case 5:
+            hsv = (HSV){HSV_TEAL};
+            break;
+        case 6:
+            hsv = (HSV){HSV_PURPLE};
+            break;
+        case 7:
+        default:
+            hsv = (HSV){HSV_RED};
+            break;
+        };
+
+        if (hsv.v > rgb_matrix_get_val()) {
+            hsv.v = MIN(rgb_matrix_get_val() + 22, 255);
+        }
+        RGB rgb = hsv_to_rgb(hsv);
+
+        for (uint8_t i = led_min; i < led_max; i++) {
+            rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
+        }
+    }
+    return false;
+};
+#endif // RGB_MATRIX_ENABLE
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
     case QK_REG:
         if (record->event.pressed) {
-            SEND_STRING_DELAY("Regards,\nQuentin Lebastard\nBastard Keyboards",
-                              5);
+            SEND_STRING_DELAY("Regards,\nQ. Lebastard\nBastard Keyboards", 5);
         }
         break;
     case QK_HELP:
@@ -273,7 +338,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
     }
+    // uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int:
+    // "
+    //         "%u, count: %u\n",
+    //         keycode, record->event.key.col, record->event.key.row,
+    //         record->event.pressed, record->event.time,
+    //         record->tap.interrupted, record->tap.count);
     return true;
 };
-
-#endif // ENCODER_MAP_ENABLE
