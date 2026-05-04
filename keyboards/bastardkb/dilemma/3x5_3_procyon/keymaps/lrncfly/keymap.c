@@ -347,12 +347,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         backlight_decrease(); // Steps down by 1 (out of 16)
         return false;
     }
-    // uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int:
-    // "
-    //         "%u, count: %u\n",
-    //         keycode, record->event.key.col, record->event.key.row,
-    //         record->event.pressed, record->event.time,
-    //         record->tap.interrupted, record->tap.count);
+    printf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int:"
+           "%u, count: %u\n",
+           keycode, record->event.key.col, record->event.key.row,
+           record->event.pressed, record->event.time, record->tap.interrupted,
+           record->tap.count);
+    // Get the LED index for this key
+    // uint8_t led_index =
+    //     g_led_config.matrix_co[record->event.key.row][record->event.key.col];
+
+    // if (led_index != NO_LED) {
+    //     uint8_t r, g, b;
+    //     rgb_matrix_get_color(led_index, &r, &g, &b);
+    //     printf("Key %u pressed - RGB: R=%u, G=%u, B=%u\n", keycode, r, g, b);
+    // }
     return true;
 };
 
