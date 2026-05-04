@@ -274,14 +274,6 @@ void matrix_init_user(void) { // Runs boot tasks for keyboard
 #ifdef RGB_MATRIX_ENABLE
 // Layer state indicator
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    if (host_keyboard_led_state().caps_lock) {
-        for (int i = 0; i <= led_max; i++) {
-            if (HAS_FLAGS(g_led_config.flags[i], LED_FLAG_MODIFIER)) {
-                rgb_matrix_set_color(i, MIN(rgb_matrix_get_val() + 76, 255),
-                                     0x00, 0x00);
-            }
-        }
-    }
 
     uint8_t layer = get_highest_layer(layer_state);
     if (layer > 0) {
@@ -338,11 +330,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
     }
-    // uprintf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int:
-    // "
-    //         "%u, count: %u\n",
-    //         keycode, record->event.key.col, record->event.key.row,
-    //         record->event.pressed, record->event.time,
-    //         record->tap.interrupted, record->tap.count);
+    printf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int:"
+           "%u, count: %u\n",
+           keycode, record->event.key.col, record->event.key.row,
+           record->event.pressed, record->event.time, record->tap.interrupted,
+           record->tap.count);
+    // Get the LED index for this key
+    // uint8_t led_index =
+    //     g_led_config.matrix_co[record->event.key.row][record->event.key.col];
+
+    // if (led_index != NO_LED) {
+    //     uint8_t r, g, b;
+    //     rgb_matrix_get_color(led_index, &r, &g, &b);
+    //     printf("Key %u pressed - RGB: R=%u, G=%u, B=%u\n", keycode, r, g, b);
+    // }
     return true;
 };

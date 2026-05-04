@@ -28,13 +28,12 @@
 // #define DILEMMA_SNIPING_DPI_CONFIG_STEP 100
 #define DYNAMIC_KEYMAP_LAYER_COUNT 8
 
-
 // #define ENCODER_RESOLUTION 4
 
 #define FLOW_TAP_TERM 150
 
 #ifdef LAYER_MENU
-#    undef LAYER_MENU
+#undef LAYER_MENU
 #endif
 #define LAYER_MENU 7
 
