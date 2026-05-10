@@ -16,8 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
 #include QMK_KEYBOARD_H
+#include "config.h"
+#include "print.h"
 
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
@@ -30,7 +31,10 @@ enum dilemma_keymap_layers {
     LAYER_LCD,
 };
 
-enum custom_keycodes { QK_REG = SAFE_RANGE, QK_HELP };
+enum custom_keycodes { QK_REG = SAFE_RANGE, QK_HELP, MY_DB_TOGG, MY_DB_STEP };
+
+bool led_debug_enabled = false;
+int current_debug_index = 0;
 
 const uint16_t PROGMEM combo4[] = {KC_V, KC_B, COMBO_END};
 
@@ -66,8 +70,8 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-#define ______________HOME_ROW_GACS_L______________ XXXXXXX, KC_LALT, KC_LSFT, KC_LCTL, XXXXXXX
-#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LCTL, KC_LSFT, KC_LALT, XXXXXXX
+#define ______________HOME_ROW_GACS_L______________ XXXXXXX, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX
+#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LSFT, KC_LCTL, KC_LALT, XXXXXXX
 
 /*
  * Layers used on the Dilemma.
@@ -329,20 +333,85 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 "I hope this helps, let me know if there's anything else!", 5);
         }
         break;
-    }
-    printf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int:"
-           "%u, count: %u\n",
-           keycode, record->event.key.col, record->event.key.row,
-           record->event.pressed, record->event.time, record->tap.interrupted,
-           record->tap.count);
-    // Get the LED index for this key
-    // uint8_t led_index =
-    //     g_led_config.matrix_co[record->event.key.row][record->event.key.col];
+    case MY_DB_TOGG:
+        if (record->event.pressed) {
+            led_debug_enabled = !led_debug_enabled;
+            if (led_debug_enabled) {
+                uprintf("RGB Debug: ON\n");
+                rgb_matrix_enable_noeeprom();
+                // STOP the animation engine from drawing
+                rgb_matrix_mode_noeeprom(RGB_MATRIX_NONE);
+                rgb_matrix_set_color_all(0, 0, 0);
+                current_debug_index = 0;
+            } else {
+                uprintf("RGB Debug: OFF\n");
+                rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+            }
+        }
+        return false;
+    case MY_DB_STEP:
+        if (record->event.pressed && led_debug_enabled) {
+            current_debug_index =
+                (current_debug_index + 1) % RGB_MATRIX_LED_COUNT;
 
-    // if (led_index != NO_LED) {
-    //     uint8_t r, g, b;
-    //     rgb_matrix_get_color(led_index, &r, &g, &b);
-    //     printf("Key %u pressed - RGB: R=%u, G=%u, B=%u\n", keycode, r, g, b);
-    // }
+            // We still print to console here so you can see the log
+            uprintf("Index: %d | Flags: %d\n", current_debug_index,
+                    g_led_config.flags[current_debug_index]);
+        }
+        return false;
+    }
     return true;
 };
+bool rgb_matrix_indicators_user(void) {
+    if (led_debug_enabled) {
+        // 1. Black out everything else
+        // We use a loop here to ensure we override the buffer completely
+        for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
+            rgb_matrix_set_color(i, 0, 0, 0);
+        }
+
+        // 2. Determine color for our current debug index
+        uint8_t flags = g_led_config.flags[current_debug_index];
+        uint8_t r = 0, g = 0, b = 0;
+
+        if (flags & 1) {
+            r = 255;
+            g = 0;
+            b = 0;
+        } // Red
+        else if (flags & 2) {
+            r = 0;
+            g = 255;
+            b = 0;
+        } // Green
+        else if (flags & 4) {
+            r = 0;
+            g = 0;
+            b = 255;
+        } // Blue
+        else {
+            r = 255;
+            g = 255;
+            b = 0;
+        } // Yellow
+
+        // 3. Set the debug pixel
+        rgb_matrix_set_color(current_debug_index, r, g, b);
+
+        return false; // Returning false tells QMK not to let other indicators
+                      // overwrite us
+    }
+    return true; // Return true when debug is off so normal indicators work
+}
+
+/*
+ * Left Side (Indices 0-35)                 Right Side (Indices 36-71)
+ * [00][01][02][03][04]                     [36][37][38][39][40]
+ * [05][06][07][08][09]                     [41][42][43][44][45]
+ * [10][11][12][13][14]                     [46][47][48][49][50]
+ *         [15][16][17]                     [51][52][53]
+ *
+ * Underglow (Example placement)
+ * [18][19]...[35]                          [54][55]...[71]
+ */
+// clang-format off

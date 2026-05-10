@@ -37,16 +37,23 @@
 #endif
 #define LAYER_MENU 7
 
-// #define LED_MATRIX_DEFAULT_MODE LED_MATRIX_SOLID // Sets the default mode, if none has been set
+// #define LED_MATRIX_DEFAULT_MODE LED_MATRIX_SOLID
+// Sets the default mode, if none has been set
 
 #define NO_MUSIC_MODE
-
-// #define RGB_MATRIX_DEFAULT_FLAGS LED_FLAG_ALL // Sets the default LED flags, if none has been set
-#define RGB_MATRIX_DEFAULT_ON true // Sets the default enabled state, if none has been set
-// #define RGB_MATRIX_FLAG_STEPS { LED_FLAG_KEYLIGHT  } // Sets the flags which can be cycled through.
+// #define RGBLIGHT_LAYERS_RETAIN_VAL
+#define RGB_MATRIX_DEFAULT_FLAGS LED_FLAG_ALL
+// Sets the default LED flags
+#define RGB_MATRIX_DEFAULT_ON true
+// Sets the default enabled state, if none has been set
+// #define RGB_MATRIX_FLAG_STEPS { LED_FLAG_ALL, LED_FLAG_KEYLIGHT |
+// LED_FLAG_MODIFIER, LED_FLAG_UNDERGLOW, LED_FLAG_NONE }
+// Sets the flags which can be cycled through.
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_RAINDROPS
+#define RGB_MATRIX_LED_COUNT 72
 #define RGB_MATRIX_SLEEP // turn off effects when suspended
-#define RGB_MATRIX_TIMEOUT 60000 // number of milliseconds to wait until rgb automatically turns off
+#define RGB_MATRIX_TIMEOUT 60000
+// number of milliseconds to wait until rgb automatically turns off
 
 // #define RGBLIGHT_LAYERS
 
