@@ -72,8 +72,8 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 
 /** Convenience row shorthands. */
 #define _______________DEAD_HALF_ROW_______________ XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-#define ______________HOME_ROW_GACS_L______________ XXXXXXX, KC_LALT, KC_LSFT, KC_LCTL, XXXXXXX
-#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LCTL, KC_LSFT, KC_LALT, XXXXXXX
+#define ______________HOME_ROW_GACS_L______________ XXXXXXX, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX
+#define ______________HOME_ROW_GACS_R______________ XXXXXXX, KC_LSFT, KC_LCTL, KC_LALT, XXXXXXX
 
 /*
  * Layers used on the Dilemma.
@@ -356,11 +356,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // uint8_t led_index =
     //     g_led_config.matrix_co[record->event.key.row][record->event.key.col];
 
-    // if (led_index != NO_LED) {
-    //     uint8_t r, g, b;
-    //     rgb_matrix_get_color(led_index, &r, &g, &b);
-    //     printf("Key %u pressed - RGB: R=%u, G=%u, B=%u\n", keycode, r, g, b);
-    // }
+            // We still print to console here so you can see the log
+            uprintf("Index: %d | Flags: %d\n", current_debug_index,
+                    g_led_config.flags[current_debug_index]);
+        }
+        return false;
+    }
     return true;
 };
 
