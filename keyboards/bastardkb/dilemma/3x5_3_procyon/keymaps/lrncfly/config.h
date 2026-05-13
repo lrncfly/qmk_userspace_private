@@ -20,7 +20,6 @@
 // #define AUTO_SHIFT_TIMEOUT 200
 
 #define CAPS_WORD_INVERT_ON_SHIFT
-
 // #define DILEMMA_DEFAULT_DPI_CONFIG_STEP 200
 // #define DILEMMA_DRAGSCROLL_DPI 250
 // #define DILEMMA_MINIMUM_DEFAULT_DPI 200
@@ -41,6 +40,7 @@
 
 #define NO_MUSIC_MODE
 // #define RGBLIGHT_LAYERS_RETAIN_VAL
+
 #define RGB_MATRIX_DEFAULT_FLAGS LED_FLAG_ALL
 // Sets the default LED flags
 #define RGB_MATRIX_DEFAULT_ON true
@@ -50,14 +50,17 @@
 // Sets the flags which can be cycled through.
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_RAINDROPS
 #define RGB_MATRIX_LED_COUNT 72
-#define RGB_MATRIX_SLEEP // turn off effects when suspended
+#define RGB_MATRIX_SLEEP
+// turn off effects when suspended
+#define RGB_MATRIX_SKIP_FRAMES
+// Helps with split sync performance
 #define RGB_MATRIX_TIMEOUT 60000
 // number of milliseconds to wait until rgb automatically turns off
 
 // #define RGBLIGHT_LAYERS
-
 #define SPLIT_LAYER_STATE_ENABLE
 #define SPLIT_LED_STATE_ENABLE
+#define SPLIT_TRANSPORT_MIRROR
 
 // #define TAP_CODE_DELAY 255
 
