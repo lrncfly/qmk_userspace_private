@@ -63,7 +63,7 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
 #define LAYOUT_LAYER_BASE                                                                     \
-        KC_Q, KC_W, KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,          KC_I,   KC_O,    KC_P, \
+        KC_Q, KC_W, KC_E,    MY_DB_STEP,    MY_DB_TOGG,    KC_Y,    KC_U,          KC_I,   KC_O,    KC_P, \
         KC_A, KC_S, KC_D,    KC_F,    KC_G,    KC_H,    KC_J,          KC_K,   KC_L, KC_QUOT, \
         KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,       KC_COMM, KC_DOT, KC_SLSH, \
                  ESC_MED, TAB_FUN, SPC_NAV, ENT_SYM, BSP_NUM, LGUI_T(KC_DEL)
@@ -263,62 +263,10 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 // clang-format on
 #endif // ENCODER_MAP_ENABLE
 
-// cool custom startup animation
-void matrix_init_user(void) { // Runs boot tasks for keyboard
-    rgblight_enable_noeeprom();
-    // rgblight_mode_noeeprom(RGB_MATRIX_BAND_VAL);
-    // rgblight_set_speed(200);
-    rgblight_sethsv(0, 255, 255);
-
-    // rgblight_enable();
-    // rgblight_sethsv(0,255,255);
-    // rgblight_mode(3);
-};
-
-#ifdef RGB_MATRIX_ENABLE
-// Layer state indicator
-bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-
-    uint8_t layer = get_highest_layer(layer_state);
-    if (layer > 0) {
-        HSV hsv = rgb_matrix_get_hsv();
-        switch (get_highest_layer(layer_state)) {
-        case 1:
-            hsv = (HSV){HSV_BLUE};
-            break;
-        case 2:
-            hsv = (HSV){HSV_AZURE};
-            break;
-        case 3:
-            hsv = (HSV){HSV_ORANGE};
-            break;
-        case 4:
-            hsv = (HSV){HSV_GREEN};
-            break;
-        case 5:
-            hsv = (HSV){HSV_TEAL};
-            break;
-        case 6:
-            hsv = (HSV){HSV_PURPLE};
-            break;
-        case 7:
-        default:
-            hsv = (HSV){HSV_RED};
-            break;
-        };
-
-        if (hsv.v > rgb_matrix_get_val()) {
-            hsv.v = MIN(rgb_matrix_get_val() + 22, 255);
-        }
-        RGB rgb = hsv_to_rgb(hsv);
-
-        for (uint8_t i = led_min; i < led_max; i++) {
-            rgb_matrix_set_color(i, rgb.r, rgb.g, rgb.b);
-        }
-    }
-    return false;
-};
-#endif // RGB_MATRIX_ENABLE
+void keyboard_post_init_user(void) {
+    // This will show up in QMK Toolbox immediately on startup
+    uprintf("Keyboard is awake and debugging is ready.\n");
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -362,56 +310,64 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 };
-bool rgb_matrix_indicators_user(void) {
-    if (led_debug_enabled) {
-        // 1. Black out everything else
-        // We use a loop here to ensure we override the buffer completely
-        for (int i = 0; i < RGB_MATRIX_LED_COUNT; i++) {
-            rgb_matrix_set_color(i, 0, 0, 0);
-        }
 
-        // 2. Determine color for our current debug index
-        uint8_t flags = g_led_config.flags[current_debug_index];
-        uint8_t r = 0, g = 0, b = 0;
+#ifdef RGB_MATRIX_ENABLE
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    uint8_t layer = get_highest_layer(layer_state);
+    if (layer == LAYER_BASE)
+        return false;
 
-        if (flags & 1) {
-            r = 255;
-            g = 0;
-            b = 0;
-        } // Red
-        else if (flags & 2) {
-            r = 0;
-            g = 255;
-            b = 0;
-        } // Green
-        else if (flags & 4) {
-            r = 0;
-            g = 0;
-            b = 255;
-        } // Blue
-        else {
-            r = 255;
-            g = 255;
-            b = 0;
-        } // Yellow
-
-        // 3. Set the debug pixel
-        rgb_matrix_set_color(current_debug_index, r, g, b);
-
-        return false; // Returning false tells QMK not to let other indicators
-                      // overwrite us
+    HSV hsv;
+    switch (layer) {
+    case LAYER_FUNCTION:
+        hsv = (HSV){HSV_BLUE};
+        break;
+    case LAYER_NAVIGATION:
+        hsv = (HSV){HSV_ORANGE};
+        break;
+    case LAYER_MEDIA:
+        hsv = (HSV){HSV_TEAL};
+        break;
+    case LAYER_POINTER:
+        hsv = (HSV){HSV_GREEN};
+        break;
+    case LAYER_SYMBOLS:
+        hsv = (HSV){HSV_PURPLE};
+        break;
+    case LAYER_NUMERAL:
+        hsv = (HSV){HSV_PINK};
+        break;
+    case LAYER_LCD:
+        hsv = (HSV){HSV_GOLDENROD};
+        break;
+    default:
+        return false;
     }
-    return true; // Return true when debug is off so normal indicators work
-}
 
-/*
- * Left Side (Indices 0-35)                 Right Side (Indices 36-71)
- * [00][01][02][03][04]                     [36][37][38][39][40]
- * [05][06][07][08][09]                     [41][42][43][44][45]
- * [10][11][12][13][14]                     [46][47][48][49][50]
- *         [15][16][17]                     [51][52][53]
- *
- * Underglow (Example placement)
- * [18][19]...[35]                          [54][55]...[71]
+    hsv.v = 128;
+    RGB rgb = hsv_to_rgb(hsv);
+
+    for (uint8_t i = led_min; i <= led_max; i++) {
+        // Based on your debug:
+        // Underglow is Flag 2. Keys are Flag 4 (and some Flag 1).
+        // We target Flag 2 to ensure we only hit the underglow strips.
+        if (g_led_config.flags[i] == 2) {
+            RGB_MATRIX_INDICATOR_SET_COLOR(i, rgb.r, rgb.g, rgb.b);
+        }
+    }
+
+    return false;
+}
+#endif
+
+/*                                                                      \
+ * Left Side (Indices 0-35)                 Right Side (Indices 36-71)  \
+ * [00][01][02][03][04]                     [36][37][38][39][40]        \
+ * [05][06][07][08][09]                     [41][42][43][44][45]        \
+ * [10][11][12][13][14]                     [46][47][48][49][50]        \
+ *         [15][16][17]                     [51][52][53]                \
+ *                                                                      \
+ * Underglow (Example placement)                                        \
+ * [18][19]...[35]                          [54][55]...[71]             \
  */
 // clang-format off
