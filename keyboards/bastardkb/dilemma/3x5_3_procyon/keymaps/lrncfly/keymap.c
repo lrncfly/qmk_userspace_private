@@ -18,7 +18,9 @@
 
 #include QMK_KEYBOARD_H
 #include "config.h"
+#ifdef CONSOLE_ENABLE
 #include "print.h"
+#endif
 
 enum dilemma_keymap_layers {
     LAYER_BASE = 0,
@@ -63,7 +65,7 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 // clang-format off
 /** \brief QWERTY layout (3 rows, 10 columns). */
 #define LAYOUT_LAYER_BASE                                                                     \
-        KC_Q, KC_W, KC_E,    MY_DB_STEP,    MY_DB_TOGG,    KC_Y,    KC_U,          KC_I,   KC_O,    KC_P, \
+        KC_Q, KC_W, KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,          KC_I,   KC_O,    KC_P, \
         KC_A, KC_S, KC_D,    KC_F,    KC_G,    KC_H,    KC_J,          KC_K,   KC_L, KC_QUOT, \
         KC_Z, KC_X, KC_C,    KC_V,    KC_B,    KC_N,    KC_M,       KC_COMM, KC_DOT, KC_SLSH, \
                  ESC_MED, TAB_FUN, SPC_NAV, ENT_SYM, BSP_NUM, LGUI_T(KC_DEL)
@@ -130,11 +132,11 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
     KC_UNDO, KC_CUT, KC_COPY, KC_PASTE, XXXXXXX,  KC_INS, KC_HOME, KC_PGUP, KC_PGDN,  KC_END, \
                      XXXXXXX,  XXXXXXX, _______,  XXXXXXX, XXXXXXX, XXXXXXX
 
-#define LAYOUT_LAYER_LCD                                                                      \
-    _______, XXXXXXX, XXXXXXX,  QK_REG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
-    XXXXXXX, XXXXXXX,   LCDPR,   LCDNE, XXXXXXX, QK_HELP, XXXXXXX,   LCDPR,   LCDNE, XXXXXXX, \
-    _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
-                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+#define LAYOUT_LAYER_LCD                                                                           \
+    _______,    XXXXXXX, XXXXXXX, QK_REG, MY_DB_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
+    XXXXXXX, MY_DB_STEP,   LCDPR,  LCDNE,    XXXXXXX, QK_HELP, XXXXXXX,   LCDPR,   LCDNE, XXXXXXX, \
+         _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
+                           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
 
 /**
 * \brief Numeral layout.
@@ -143,11 +145,11 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 * are in the standard numpad locations with symbols in the remaining positions.
 * `KC_DOT` is duplicated from the base layer.
 */
-#define LAYOUT_LAYER_NUMERAL                                                                  \
-    KC_LBRC,    KC_7,    KC_8,    KC_9, KC_RBRC, _______________DEAD_HALF_ROW_______________, \
-    KC_SCLN,    KC_4,    KC_5,    KC_6,  KC_EQL, ______________HOME_ROW_GACS_R______________, \
-    KC_GRV,     KC_1,    KC_2,    KC_3, KC_BSLS, _______________DEAD_HALF_ROW_______________, \
-                         KC_0,  KC_DOT, KC_MINS, XXXXXXX, _______, XXXXXXX
+#define LAYOUT_LAYER_NUMERAL                                                                 \
+    KC_LBRC, KC_7, KC_8,   KC_9, KC_RBRC, _______________DEAD_HALF_ROW_______________, \
+    KC_SCLN, KC_4, KC_5,   KC_6,  KC_EQL, ______________HOME_ROW_GACS_R______________, \
+    KC_GRV,  KC_1, KC_2,   KC_3, KC_BSLS, _______________DEAD_HALF_ROW_______________, \
+                   KC_0, KC_DOT, KC_MINS, XXXXXXX, _______, XXXXXXX
 
 /**
 * \brief Symbols layer.
@@ -268,6 +270,7 @@ void keyboard_post_init_user(void) {
     uprintf("Keyboard is awake and debugging is ready.\n");
 }
 
+#ifdef CONSOLE_ENABLE
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
     case QK_REG:
@@ -310,6 +313,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
     return true;
 };
+#endif // CONSOLE_ENABLE
 
 #ifdef RGB_MATRIX_ENABLE
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
