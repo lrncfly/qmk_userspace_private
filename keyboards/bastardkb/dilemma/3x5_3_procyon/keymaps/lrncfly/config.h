@@ -41,7 +41,8 @@
 #define NO_MUSIC_MODE
 // #define RGBLIGHT_LAYERS_RETAIN_VAL
 
-#define RGB_MATRIX_DEFAULT_FLAGS LED_FLAG_ALL
+#define RGB_MATRIX_ALLOWED_FLAGS LED_FLAG_KEYLIGHT
+// #define RGB_MATRIX_DEFAULT_FLAGS LED_FLAG_ALL
 // Sets the default LED flags
 #define RGB_MATRIX_DEFAULT_ON true
 // Sets the default enabled state, if none has been set
@@ -49,7 +50,9 @@
 // LED_FLAG_MODIFIER, LED_FLAG_UNDERGLOW, LED_FLAG_NONE }
 // Sets the flags which can be cycled through.
 #define RGB_MATRIX_DEFAULT_MODE RGB_MATRIX_RAINDROPS
+#define RGB_MATRIX_DEFAULT_VAL 128
 #define RGB_MATRIX_LED_COUNT 72
+#define RGB_MATRIX_LED_PROCESSOR_CONTINUE
 #define RGB_MATRIX_SLEEP
 // turn off effects when suspended
 #define RGB_MATRIX_SKIP_FRAMES

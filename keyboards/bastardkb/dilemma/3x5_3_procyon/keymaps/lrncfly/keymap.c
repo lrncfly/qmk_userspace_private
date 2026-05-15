@@ -254,20 +254,20 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 #ifdef ENCODER_MAP_ENABLE
 // clang-format off
 const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
-    [LAYER_BASE]       = {ENCODER_CCW_CW(MS_WHLD, MS_WHLU),  ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [LAYER_FUNCTION]   = {ENCODER_CCW_CW(KC_DOWN, KC_UP),    ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
-    [LAYER_NAVIGATION] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
-    [LAYER_MEDIA]      = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP),  ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
-    [LAYER_POINTER]    = {ENCODER_CCW_CW(RM_HUED, RM_HUEU),  ENCODER_CCW_CW(RM_SATD, RM_SATU)},
-    [LAYER_NUMERAL]    = {ENCODER_CCW_CW(RM_VALD, RM_VALU),  ENCODER_CCW_CW(RM_SPDD, RM_SPDU)},
-    [LAYER_SYMBOLS]    = {ENCODER_CCW_CW(RM_PREV, RM_NEXT),  ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
+    [LAYER_BASE]       = {ENCODER_CCW_CW(MS_WHLD, MS_WHLU), ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [LAYER_FUNCTION]   = {ENCODER_CCW_CW(KC_DOWN, KC_UP),   ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
+    [LAYER_NAVIGATION] = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP), ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
+    [LAYER_MEDIA]      = {ENCODER_CCW_CW(KC_PGDN, KC_PGUP), ENCODER_CCW_CW(KC_VOLU, KC_VOLD)},
+    [LAYER_POINTER]    = {ENCODER_CCW_CW(RM_HUED, RM_HUEU), ENCODER_CCW_CW(RM_SATD, RM_SATU)},
+    [LAYER_NUMERAL]    = {ENCODER_CCW_CW(RM_VALD, RM_VALU), ENCODER_CCW_CW(RM_SPDD, RM_SPDU)},
+    [LAYER_SYMBOLS]    = {ENCODER_CCW_CW(RM_PREV, RM_NEXT), ENCODER_CCW_CW(KC_LEFT, KC_RGHT)},
 };
 // clang-format on
 #endif // ENCODER_MAP_ENABLE
 
 void keyboard_post_init_user(void) {
     // This will show up in QMK Toolbox immediately on startup
-    uprintf("Keyboard is awake and debugging is ready.\n");
+    // uprintf("Keyboard is awake and debugging is ready.\n");
 }
 
 #ifdef CONSOLE_ENABLE
@@ -318,10 +318,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef RGB_MATRIX_ENABLE
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     uint8_t layer = get_highest_layer(layer_state);
-    if (layer == LAYER_BASE)
-        return false;
 
-    HSV hsv;
+    HSV hsv = {0, 0, 0}; // Initialize to "Black" by default
+
     switch (layer) {
     case LAYER_FUNCTION:
         hsv = (HSV){HSV_BLUE};
@@ -344,18 +343,16 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     case LAYER_LCD:
         hsv = (HSV){HSV_GOLDENROD};
         break;
-    default:
-        return false;
+        // No case for LAYER_BASE here means hsv stays {0,0,0}
     }
 
-    hsv.v = 128;
     RGB rgb = hsv_to_rgb(hsv);
 
+    // 3. Now the loop runs for EVERY layer, including BASE
     for (uint8_t i = led_min; i <= led_max; i++) {
-        // Based on your debug:
-        // Underglow is Flag 2. Keys are Flag 4 (and some Flag 1).
-        // We target Flag 2 to ensure we only hit the underglow strips.
         if (g_led_config.flags[i] == 2) {
+            // If it's LAYER_BASE, rgb will be 0,0,0, effectively "hiding" the
+            // animation
             RGB_MATRIX_INDICATOR_SET_COLOR(i, rgb.r, rgb.g, rgb.b);
         }
     }
