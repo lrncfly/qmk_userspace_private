@@ -106,7 +106,7 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 * symmetrical to accomodate the left- and right-hand trackball.
 */
 #define LAYOUT_LAYER_MEDIA                                                                    \
-    XXXXXXX, RM_PREV, RM_TOGG, RM_NEXT, XXXXXXX, XXXXXXX, RM_PREV, RM_TOGG, RM_NEXT, XXXXXXX, \
+    RM_VALD, RM_PREV, RM_TOGG, RM_NEXT, RM_VALU, RM_SATD, RM_PREV, RM_TOGG, RM_NEXT, RM_SATU, \
     KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, \
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
                       _______, KC_MPLY, KC_MSTP, KC_MSTP, KC_MPLY, KC_MUTE
@@ -180,8 +180,8 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
     ...)                                                      \
              L00,         L01,         L02,         L03, L04, \
              R05,         R06,         R07,         R08, R09, \
-             L10, LALT_T(L11), RSFT_T(L12), LCTL_T(L13), L14, \
-             R15, LCTL_T(R16), RSFT_T(R17), LALT_T(R18), R19, \
+             L10, LALT_T(L11), LCTL_T(L12), RSFT_T(L13), L14, \
+             R15, RSFT_T(R16), LCTL_T(R17), LALT_T(R18), R19, \
       __VA_ARGS__
 #define HOME_ROW_MOD_GACS(...) _HOME_ROW_MOD_GACS(__VA_ARGS__)
 
