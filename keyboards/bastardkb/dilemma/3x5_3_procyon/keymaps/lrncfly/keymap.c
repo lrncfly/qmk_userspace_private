@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include QMK_KEYBOARD_H
 #include "config.h"
 #ifdef CONSOLE_ENABLE
@@ -226,28 +227,6 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
       __VA_ARGS__
 #define LCD_MOD(...) _LCD_MOD(__VA_ARGS__)
 
-    /**
-     * \brief Add lcd layer keys to a layout.
-     *
-     * Expects a 10-key per row layout.  The layout passed in parameter must contain
-     * at least 30 keycodes.
-     *
-     * This is meant to be used with `LAYER_ALPHAS_QWERTY` defined above, eg.:
-     *
-     *     LCDMOD(LAYER_ALPHAS_QWERTY)
-     */
-
-#define _LCD_MOD(                                                      \
-    L00, L01, L02, L03, L04, R05, R06, R07, R08, R09,                  \
-    L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
-    L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                  \
-    ...)                                                               \
-     _L_LCD(L00), L01, L02, L03, L04, R05, R06, R07, R08, _L_LCD(R09), \
-             L10, L11, L12, L13, L14, R15, R16, R17, R18,         R19, \
-             L20, L21, L22, L23, L24, R25, R26, R27, R28,         R29, \
-      __VA_ARGS__
-#define LCD_MOD(...) _LCD_MOD(__VA_ARGS__)
-
 #define LAYOUT_wrapper(...) LAYOUT_split_3x5_3(__VA_ARGS__)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -325,21 +304,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (record->event.pressed && led_debug_enabled) {
             current_debug_index =
                 (current_debug_index + 1) % RGB_MATRIX_LED_COUNT;
-
-            // We still print to console here so you can see the log
-            uprintf("Index: %d | Flags: %d\n", current_debug_index,
-                    g_led_config.flags[current_debug_index]);
-        }
-        return false;
-    }
-    printf("KL: kc: 0x%04X, col: %2u, row: %2u, pressed: %u, time: %5u, int:"
-           "%u, count: %u\n",
-           keycode, record->event.key.col, record->event.key.row,
-           record->event.pressed, record->event.time, record->tap.interrupted,
-           record->tap.count);
-    // Get the LED index for this key
-    // uint8_t led_index =
-    //     g_led_config.matrix_co[record->event.key.row][record->event.key.col];
 
             // We still print to console here so you can see the log
             uprintf("Index: %d | Flags: %d\n", current_debug_index,
