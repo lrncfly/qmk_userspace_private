@@ -317,42 +317,56 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 #ifdef RGB_MATRIX_ENABLE
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    uint8_t layer = get_highest_layer(layer_state);
-
-    HSV hsv = {0, 0, 0}; // Initialize to "Black" by default
-
-    switch (layer) {
-    case LAYER_FUNCTION:
-        hsv = (HSV){HSV_BLUE};
-        break;
-    case LAYER_NAVIGATION:
-        hsv = (HSV){HSV_ORANGE};
-        break;
-    case LAYER_MEDIA:
-        hsv = (HSV){HSV_TEAL};
-        break;
-    case LAYER_POINTER:
-        hsv = (HSV){HSV_GREEN};
-        break;
-    case LAYER_SYMBOLS:
-        hsv = (HSV){HSV_PURPLE};
-        break;
-    case LAYER_NUMERAL:
-        hsv = (HSV){HSV_PINK};
-        break;
-    case LAYER_LCD:
-        hsv = (HSV){HSV_GOLDENROD};
-        break;
-        // No case for LAYER_BASE here means hsv stays {0,0,0}
+    // underglow to honor RM_TOGG
+    if (!rgb_matrix_is_enabled()) {
+        return false;
     }
 
-    RGB rgb = hsv_to_rgb(hsv);
+    uint8_t layer = get_highest_layer(layer_state);
+    uint8_t mods = get_mods() | get_oneshot_mods();
 
-    // 3. Now the loop runs for EVERY layer, including BASE
+    // 1. Loop through all the LEDs to determine their color individualistically
     for (uint8_t i = led_min; i <= led_max; i++) {
-        if (g_led_config.flags[i] == 2) {
-            // If it's LAYER_BASE, rgb will be 0,0,0, effectively "hiding" the
-            // animation
+        if (g_led_config.flags[i] == 2) { // Target only Underglow
+            // Show modifiers beside screen/trackpad
+            bool is_modifier_zone =
+                (i >= 14 && i <= 17) || (i >= 50 && i <= 53);
+
+            HSV hsv = (HSV){HSV_BLACK}; // Default to off
+
+            // 2. If mods are active AND this specific LED is in the modifier
+            // zone, use mod colors
+            if (mods && is_modifier_zone) {
+                if (mods & MOD_MASK_SHIFT)
+                    hsv = (HSV){HSV_RED};
+                else if (mods & MOD_MASK_CTRL)
+                    hsv = (HSV){HSV_BLUE};
+                else if (mods & MOD_MASK_ALT)
+                    hsv = (HSV){HSV_GREEN};
+                else if (mods & MOD_MASK_GUI)
+                    hsv = (HSV){HSV_WHITE};
+            }
+            // 3. Otherwise, use standard layer colors for the underglow
+            else {
+                switch (layer) {
+                    // clang-format off
+                    case LAYER_FUNCTION:   hsv = (HSV){HSV_AZURE};       break;
+                    case LAYER_NAVIGATION: hsv = (HSV){HSV_CHARTREUSE};  break;
+                    case LAYER_MEDIA:      hsv = (HSV){HSV_CORAL};       break;
+                    case LAYER_POINTER:    hsv = (HSV){HSV_CYAN};        break;
+                    case LAYER_SYMBOLS:    hsv = (HSV){HSV_GOLD};        break;
+                    case LAYER_NUMERAL:    hsv = (HSV){HSV_PINK};        break;
+                    case LAYER_LCD:        hsv = (HSV){HSV_GOLDENROD};   break;
+                    // clang-format on
+                }
+            }
+
+            // 4. Apply global brightness matching BEFORE converting to RGB
+            if (hsv.v > 0) {
+                hsv.v = rgb_matrix_config.hsv.v;
+            }
+
+            RGB rgb = hsv_to_rgb(hsv);
             RGB_MATRIX_INDICATOR_SET_COLOR(i, rgb.r, rgb.g, rgb.b);
         }
     }

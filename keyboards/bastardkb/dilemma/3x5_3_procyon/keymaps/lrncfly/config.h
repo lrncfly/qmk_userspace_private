@@ -39,7 +39,8 @@
 // Sets the default mode, if none has been set
 
 #define NO_MUSIC_MODE
-// #define RGBLIGHT_LAYERS_RETAIN_VAL
+
+#define RGBLIGHT_LAYERS_RETAIN_VAL
 
 #define RGB_MATRIX_ALLOWED_FLAGS LED_FLAG_KEYLIGHT
 // #define RGB_MATRIX_DEFAULT_FLAGS LED_FLAG_ALL
