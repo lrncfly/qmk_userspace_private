@@ -33,7 +33,14 @@ enum dilemma_keymap_layers {
     LAYER_LCD,
 };
 
-enum custom_keycodes { QK_REG = SAFE_RANGE, QK_HELP, MY_DB_TOGG, MY_DB_STEP };
+enum custom_keycodes {
+    QK_REG = SAFE_RANGE,
+    QK_HELP,
+    MY_DB_TOGG,
+    MY_DB_STEP,
+    LCD_BUP,
+    LCD_BDN
+};
 
 bool led_debug_enabled = false;
 int current_debug_index = 0;
@@ -107,7 +114,7 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 */
 #define LAYOUT_LAYER_MEDIA                                                                    \
     RM_VALD, RM_PREV, RM_TOGG, RM_NEXT, RM_VALU, RM_SATD, RM_PREV, RM_TOGG, RM_NEXT, RM_SATU, \
-    KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, \
+    LCD_BDN, KC_VOLD, KC_MUTE, KC_VOLU, LCD_BUP, KC_MPRV, KC_VOLD, KC_MUTE, KC_VOLU, KC_MNXT, \
     _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
                       _______, KC_MPLY, KC_MSTP, KC_MSTP, KC_MPLY, KC_MUTE
 
@@ -133,7 +140,7 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
                      XXXXXXX,  XXXXXXX, _______,  XXXXXXX, XXXXXXX, XXXXXXX
 
 #define LAYOUT_LAYER_LCD                                                                           \
-    _______,    XXXXXXX, XXXXXXX, QK_REG, MY_DB_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
+    _______,    LCD_BDN, LCD_BUP, QK_REG, MY_DB_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
     XXXXXXX, MY_DB_STEP,   LCDPR,  LCDNE,    XXXXXXX, QK_HELP, XXXXXXX,   LCDPR,   LCDNE, XXXXXXX, \
          _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
@@ -270,9 +277,9 @@ void keyboard_post_init_user(void) {
     // uprintf("Keyboard is awake and debugging is ready.\n");
 }
 
-#ifdef CONSOLE_ENABLE
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+#ifdef CONSOLE_ENABLE
     case QK_REG:
         if (record->event.pressed) {
             SEND_STRING_DELAY("Regards,\nQ. Lebastard\nBastard Keyboards", 5);
@@ -310,10 +317,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     g_led_config.flags[current_debug_index]);
         }
         return false;
+#endif // CONSOLE_ENABLE
+    case LCD_BUP:
+        backlight_increase(); // Steps up by 1 (out of 16)
+        return false;
+    case LCD_BDN:
+        backlight_decrease(); // Steps down by 1 (out of 16)
+        return false;
     }
     return true;
 };
-#endif // CONSOLE_ENABLE
 
 #ifdef RGB_MATRIX_ENABLE
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {

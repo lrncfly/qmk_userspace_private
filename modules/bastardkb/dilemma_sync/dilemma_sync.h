@@ -9,6 +9,7 @@ typedef struct {
     uint8_t                rgb_enabled;
     uint8_t                rgb_effect_mode;
     uint16_t               rgb_val;
+    uint8_t                lcd_val;
     uint16_t               dpi;
     uint16_t               s_dpi;
 } dilemma_status_t;
