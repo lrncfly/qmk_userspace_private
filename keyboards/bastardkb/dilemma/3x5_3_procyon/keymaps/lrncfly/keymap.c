@@ -18,20 +18,14 @@
 
 #include QMK_KEYBOARD_H
 #include "config.h"
+#include "layers.h"
+
 #ifdef CONSOLE_ENABLE
 #include "print.h"
 #endif
 
-enum dilemma_keymap_layers {
-    LAYER_BASE = 0,
-    LAYER_FUNCTION,
-    LAYER_NAVIGATION,
-    LAYER_MEDIA,
-    LAYER_POINTER,
-    LAYER_NUMERAL,
-    LAYER_SYMBOLS,
-    LAYER_LCD,
-};
+#include "modules/bastardkb/lcd/lcd.h"
+extern lcd_module_t lcd_module_my_dashboard;
 
 enum custom_keycodes {
     QK_REG = SAFE_RANGE,
@@ -272,9 +266,16 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {
 // clang-format on
 #endif // ENCODER_MAP_ENABLE
 
+// Hook into QMK's keyboard initialization phase to register our canvas elements
 void keyboard_post_init_user(void) {
-    // This will show up in QMK Toolbox immediately on startup
-    // uprintf("Keyboard is awake and debugging is ready.\n");
+    if (is_keyboard_left()) {
+        // Run our layout builder safely inside the initialization pool
+        lcd_module_my_dashboard.init_module();
+
+        // Force the screen manager to boot into our minimalist setup as the
+        // standard home slate
+        lcd_module_my_dashboard.load_module();
+    }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -387,6 +388,33 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     return false;
 }
 #endif
+
+// Hook into the housekeeping pipeline to trigger our frame data refresh rate
+void housekeeping_task_user(void) {
+    if (is_keyboard_left()) {
+        // Run our background loop updates (WPM calculations & Mod tracking)
+        lcd_module_my_dashboard.housekeeping_task();
+    }
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    if (is_keyboard_master() && is_keyboard_left()) {
+        switch (get_highest_layer(state)) {
+        case LAYER_NAVIGATION:
+        case LAYER_POINTER:
+            // When on trackpad modes, you can point the router to the factory
+            // screen base which has the mouse tracking bars built inside it!
+            set_current_module(0); // Index 0 is lcd_module_base upstream
+            break;
+
+        default:
+            // Snap completely back to our custom minimalist home layout
+            lcd_module_my_dashboard.load_module();
+            break;
+        }
+    }
+    return state;
+}
 
 /*                                                                      \
  * Left Side (Indices 0-35)                 Right Side (Indices 36-71)  \

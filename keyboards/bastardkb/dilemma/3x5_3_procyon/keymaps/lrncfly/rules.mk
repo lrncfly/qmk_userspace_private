@@ -11,4 +11,7 @@ RGB_MATRIX_ENABLE = yes
 RGB_MATRIX_CUSTOM_USER = no
 TAP_DANCE_ENABLE = yes
 VIA_ENABLE = yes
+WPM_ENABLE = yes
 # VIAL_ENABLE = yes
+
+SRC += my_lcd_dashboard.c
