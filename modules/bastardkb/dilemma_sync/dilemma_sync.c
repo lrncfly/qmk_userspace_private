@@ -1,6 +1,5 @@
 #include QMK_KEYBOARD_H
 #include "dilemma_sync.h"
-#include "backlight.h"
 #include "transactions.h"
 
 dilemma_status_t dilemma_status = { 0 };
@@ -24,13 +23,11 @@ void housekeeping_task_dilemma_sync(void) {
     }
 }
 
-void dilemma_sync_handler(uint8_t initiator2target_buffer_size,
-                          const void *initiator2target_buffer,
-                          uint8_t target2initiator_buffer_size,
-                          void *target2initiator_buffer) {
-    // Keep this empty or basic to prevent custom packet interrupts on the slave
-    if (initiator2target_buffer_size == sizeof(dilemma_status_t)) {
-        dilemma_status = *(const dilemma_status_t *)initiator2target_buffer;
+void dilemma_sync_handler(uint8_t initiator2target_buffer_size, const void* initiator2target_buffer, uint8_t target2initiator_buffer_size, void* target2initiator_buffer) {
+    if (!is_keyboard_master()) {
+        if (initiator2target_buffer_size == sizeof(dilemma_status_t)) {
+            dilemma_status = *(const dilemma_status_t*)initiator2target_buffer;
+        }
     }
 }
 
@@ -44,17 +41,6 @@ void update_dilemma_status(void) {
     dilemma_status.rgb_enabled = rgb_matrix_is_enabled();
     dilemma_status.rgb_effect_mode = rgb_matrix_get_mode();
     dilemma_status.rgb_val = rgb_matrix_get_val();
-    if (is_keyboard_master()) {
-        extern backlight_config_t backlight_config;
-
-        if (timer_elapsed32(last_input_activity_time()) > RGB_MATRIX_TIMEOUT) {
-            dilemma_status.lcd_val = 2;
-        } else {
-            dilemma_status.lcd_val = backlight_config.level;
-        }
-
-        backlight_set(dilemma_status.lcd_val);
-    }
 }
 
 const dilemma_status_t get_dilemma_status(void) {

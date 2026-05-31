@@ -22,9 +22,7 @@ dilemma_status_t dilemma_lcd_status = { 0 };
 
 static void update_layer_name(lv_obj_t* obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
 static void update_rgb_value(lv_obj_t* obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
-static void update_rgb_bar(lv_obj_t *obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
-static void update_lcd_value(lv_obj_t *obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
-static void update_lcd_bar(lv_obj_t *obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
+static void update_rgb_bar(lv_obj_t* obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
 static void update_mod_shift(lv_obj_t* obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
 static void update_mod_ctrl(lv_obj_t* obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
 static void update_mod_alt(lv_obj_t* obj, const dilemma_status_t current_status, const dilemma_status_t prev_status);
@@ -47,7 +45,7 @@ static void refresh_screen_base(void);
 static lv_obj_t* ui_screen_base;
 static lv_obj_t* ui_screen_base_menu;
 
-static obj_update_dilemma_lcd_status_t widgets[16];
+static obj_update_dilemma_lcd_status_t widgets[14];
 static obj_update_dilemma_menu_t menus[3];
 static uint8_t screen_index = 0;
 static uint8_t menu_index = 0;
@@ -85,15 +83,12 @@ void init_screen_base(void) {
 
     // line separator
     ui_create_line_separator(cont, 1, 3);
-    // LCD widgets
-    ui_create_secondary_text(cont, "LCD", true, 2);
-    widgets[11] = (obj_update_dilemma_lcd_status_t){ ui_create_progress_bar(cont, 6), &update_lcd_bar, };
-    widgets[12] = (obj_update_dilemma_lcd_status_t){ ui_create_number_label(cont, 2), &update_lcd_value, };
+
     // rgb widgets
     ui_create_secondary_text(cont, "RGB", true, 2);
-    widgets[13] = (obj_update_dilemma_lcd_status_t){ ui_create_progress_bar(cont, 6), &update_rgb_bar, };
-    widgets[14] = (obj_update_dilemma_lcd_status_t){ ui_create_number_label(cont, 2), &update_rgb_value, };
-    widgets[15] = (obj_update_dilemma_lcd_status_t){ ui_create_secondary_text(cont, "effect...", true, 1), &update_rgb_effect};
+    widgets[11] = (obj_update_dilemma_lcd_status_t){ ui_create_progress_bar(cont, 6), &update_rgb_bar, };
+    widgets[12] = (obj_update_dilemma_lcd_status_t){ ui_create_number_label(cont, 2), &update_rgb_value, };
+    widgets[13] = (obj_update_dilemma_lcd_status_t){ ui_create_secondary_text(cont, "effect...", true, 1), &update_rgb_effect };
 
     /* ----- menus ----- */
     menus[0] = (obj_update_dilemma_menu_t){
@@ -152,42 +147,22 @@ static const char* rgb_matrix_get_effect_name(void) {
 }
 
 // TODO add dilemma layers, not only MAX
-static void update_layer_name(lv_obj_t *obj,
-                              const dilemma_status_t current_status,
-                              const dilemma_status_t prev_status) {
+static void update_layer_name(lv_obj_t* obj, const dilemma_status_t current_status, const dilemma_status_t prev_status) {
     if (current_status.layer != prev_status.layer) {
         switch (current_status.layer) {
-        case 0:
-        default:
-            if (is_keyboard_master()) {
-                // Code to draw "MASTER" or "PRIMARY" text on the screen
-                lv_label_set_text(obj, "Base");
-            } else {
-                // Code to draw "SLAVE" or "SECONDARY" text on the screen
-                lv_label_set_text(obj, "S: Base");
-            }
-            break;
-        case 1:
-            lv_label_set_text(obj, "Function");
-            break;
-        case 2:
-            lv_label_set_text(obj, "Navigation");
-            break;
-        case 3:
-            lv_label_set_text(obj, "Media");
-            break;
-        case 4:
-            lv_label_set_text(obj, "Pointer");
-            break;
-        case 5:
-            lv_label_set_text(obj, "Numeric");
-            break;
-        case 6:
-            lv_label_set_text(obj, "Symbols");
-            break;
-        case 7:
-            lv_label_set_text(obj, "7");
-            break;
+            case 0:
+            default:
+                lv_label_set_text(obj, "LAYER: BASE");
+                break;
+            case 1:
+                lv_label_set_text(obj, "LAYER: LOWER");
+                break;
+            case 2:
+                lv_label_set_text(obj, "LAYER: RAISE");
+                break;
+            case 3:
+                lv_label_set_text(obj, "LAYER: MOUSE");
+                break;
         }
     }
 }
@@ -261,24 +236,6 @@ static void update_rgb_bar(lv_obj_t* obj, const dilemma_status_t current_status,
             float rel = (float)(current_status.rgb_val) * 100 / 156;
             lv_bar_set_value(obj, (uint16_t)rel, LV_ANIM_OFF);
         }
-    }
-}
-static void update_lcd_bar(lv_obj_t *obj, const dilemma_status_t current_status,
-                           const dilemma_status_t prev_status) {
-    if (current_status.lcd_val != prev_status.lcd_val) {
-        float rel = (float)(current_status.lcd_val) * 100 / BACKLIGHT_LEVELS;
-        lv_bar_set_value(obj, (uint16_t)rel, LV_ANIM_OFF);
-    }
-}
-
-static void update_lcd_value(lv_obj_t *obj,
-                             const dilemma_status_t current_status,
-                             const dilemma_status_t prev_status) {
-    // Only update the screen if the brightness value actually changed
-    if (current_status.lcd_val != prev_status.lcd_val) {
-        char lcdval[12]; // Small, efficient buffer size for a 2-digit number
-        snprintf(lcdval, sizeof(lcdval), "%u", current_status.lcd_val);
-        lv_label_set_text(obj, lcdval);
     }
 }
 
