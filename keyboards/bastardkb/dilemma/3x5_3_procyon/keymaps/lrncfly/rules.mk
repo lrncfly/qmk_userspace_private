@@ -14,4 +14,5 @@ VIA_ENABLE = yes
 WPM_ENABLE = yes
 # VIAL_ENABLE = yes
 
-SRC += my_lcd/my_lcd_dashboard.c
+# Custom LCD Module
+include $(KEYMAP_PATH)/my_lcd/rules.mk

@@ -51,7 +51,7 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
 #define ENT_SYM LT(LAYER_SYMBOLS, KC_ENT)
 #define BSP_NUM LT(LAYER_NUMERAL, KC_BSPC)
 #define SPC_NUM LT(LAYER_NUMERAL, KC_SPC)
-#define _L_LCD(KC) LT(LAYER_LCD, KC)
+// #define _L_LCD(KC) LT(LAYER_LCD, KC)
 #define _L_PTR(KC) LT(LAYER_POINTER, KC)
 
 #ifndef POINTING_DEVICE_ENABLE
@@ -133,12 +133,12 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
     KC_UNDO, KC_CUT, KC_COPY, KC_PASTE, XXXXXXX,  KC_INS, KC_HOME, KC_PGUP, KC_PGDN,  KC_END, \
                      XXXXXXX,  XXXXXXX, _______,  XXXXXXX, XXXXXXX, XXXXXXX
 
-#define LAYOUT_LAYER_LCD                                                                           \
-    _______,    LCD_BDN, LCD_BUP, QK_REG, MY_DB_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
-    XXXXXXX, MY_DB_STEP,   LCDPR,  LCDNE,    XXXXXXX, QK_HELP, XXXXXXX,   LCDPR,   LCDNE, XXXXXXX, \
-         _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
-                           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-
+/* #define LAYOUT_LAYER_LCD                                                                           \
+     _______,    LCD_BDN, LCD_BUP, QK_REG, MY_DB_TOGG, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, _______, \
+     XXXXXXX, MY_DB_STEP,   LCDPR,  LCDNE,    XXXXXXX, QK_HELP, XXXXXXX,   LCDPR,   LCDNE, XXXXXXX, \
+          _______________DEAD_HALF_ROW_______________, _______________DEAD_HALF_ROW_______________, \
+                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+*/
 /**
 * \brief Numeral layout.
 *
@@ -222,7 +222,7 @@ combo_t key_combos[] = {COMBO(combo4, KC_RBRC)};
     L10, L11, L12, L13, L14, R15, R16, R17, R18, R19,                  \
     L20, L21, L22, L23, L24, R25, R26, R27, R28, R29,                  \
     ...)                                                               \
-     _L_LCD(L00), L01, L02, L03, L04, R05, R06, R07, R08, _L_LCD(R09), \
+     L00, L01, L02, L03, L04, R05, R06, R07, R08, R09, \
              L10, L11, L12, L13, L14, R15, R16, R17, R18,         R19, \
              L20, L21, L22, L23, L24, R25, R26, R27, R28,         R29, \
       __VA_ARGS__
@@ -238,7 +238,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [LAYER_NUMERAL]    = LAYOUT_wrapper(LAYOUT_LAYER_NUMERAL),
     [LAYER_POINTER]    = LAYOUT_wrapper(LAYOUT_LAYER_POINTER),
     [LAYER_SYMBOLS]    = LAYOUT_wrapper(LAYOUT_LAYER_SYMBOLS),
-    [LAYER_LCD]        = LAYOUT_wrapper(LAYOUT_LAYER_LCD),
+    // [LAYER_LCD]        = LAYOUT_wrapper(LAYOUT_LAYER_LCD),
 };
 
 // clang-format on
@@ -370,8 +370,8 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                     case LAYER_POINTER:    hsv = (HSV){HSV_CYAN};        break;
                     case LAYER_SYMBOLS:    hsv = (HSV){HSV_GOLD};        break;
                     case LAYER_NUMERAL:    hsv = (HSV){HSV_PINK};        break;
-                    case LAYER_LCD:        hsv = (HSV){HSV_GOLDENROD};   break;
-                    // clang-format on
+                    // case LAYER_LCD:        hsv = (HSV){HSV_GOLDENROD};   break;
+                        // clang-format on
                 }
             }
 
