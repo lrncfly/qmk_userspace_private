@@ -13,6 +13,3 @@ TAP_DANCE_ENABLE = yes
 VIA_ENABLE = yes
 WPM_ENABLE = yes
 # VIAL_ENABLE = yes
-
-# Custom LCD Module
-include $(KEYMAP_PATH)/my_lcd/rules.mk

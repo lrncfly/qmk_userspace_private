@@ -24,7 +24,8 @@
 #include "print.h"
 #endif
 
-#include "modules/bastardkb/lcd/lcd.h"
+#include "my_lcd_dashboard.h"
+
 extern lcd_module_t lcd_module_my_dashboard;
 
 enum custom_keycodes {

@@ -1,6 +1,6 @@
 {
     "modules": [
-        "bastardkb/lcd",
+        "lrncfly/lcd",
         "bastardkb/dilemma_sync",
         "bastardkb/argos"
     ]

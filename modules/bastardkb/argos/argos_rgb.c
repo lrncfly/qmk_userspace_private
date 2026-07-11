@@ -36,7 +36,7 @@ void argos_rgb_load_from_eeprom(void) {
 bool rgb_matrix_indicators_advanced_argos(uint8_t led_min, uint8_t led_max) {
     const uint8_t layer = get_highest_layer(layer_state);
     const uint16_t min_index = layer * RGB_ENTRIES_PER_LAYER;
-
+    
     for(int i = led_min; i < led_max; i++) {
         const uint16_t index = min_index + i;
         // printf("Testing rgb entry index %d\n", index);
@@ -54,16 +54,15 @@ bool rgb_matrix_indicators_advanced_argos(uint8_t led_min, uint8_t led_max) {
             }
         }
     }
-
+    
     return true;
 }
 
-// The rgb module code is called BEFORE the KB code, so we need to override the
-// KB code. We can't do that, so instead we override the user code, so that the
-// keyboard code detects it and does not execute. bool
-// rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-//     return false;
-// }
+// The rgb module code is called BEFORE the KB code, so we need to override the KB code.
+// We can't do that, so instead we override the user code, so that the keyboard code detects it and does not execute.
+bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+    return false;
+}
 
 /*
     TODO: we don't need row and col here.

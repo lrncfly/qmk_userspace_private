@@ -31,4 +31,4 @@
 // More available live storage! Useful for tap dances and RGB
 #define WEAR_LEVELING_BACKING_SIZE 131072
 
-// #define SPLIT_TRANSACTION_IDS_KB RPC_ID_RGB_SYNC
+#define SPLIT_TRANSACTION_IDS_KB RPC_ID_RGB_SYNC

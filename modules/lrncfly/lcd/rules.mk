@@ -1,0 +1,5 @@
+QUANTUM_PAINTER_ENABLE = yes
+QUANTUM_PAINTER_DRIVERS += st7789_spi
+
+SRC += $(QUANTUM_PAINTER_PATH)/driver/st7789/st7789_spi.c
+SRC += $(LCD_MODULE_PATH)/lcd_dashboard.c
