@@ -14,4 +14,4 @@ VIA_ENABLE = yes
 WPM_ENABLE = yes
 # VIAL_ENABLE = yes
 
-SRC += my_lcd_dashboard.c
+SRC += my_lcd/my_lcd_dashboard.c
