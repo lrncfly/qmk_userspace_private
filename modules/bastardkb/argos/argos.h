@@ -9,7 +9,7 @@
 #include "util.h"
 
 // Argos protocol version
-#define ARGOS_PROTOCOL_VERSION 0x0001
+#define ARGOS_PROTOCOL_VERSION 0x0003
 #define ARGOS_CMD_PREFIX 0x90 // hopefully something that won't conflict with VIA
 #define QMK_KEYCODES_VERSION_COMPATIBLE_0 0
 #define QMK_KEYCODES_VERSION_COMPATIBLE_1 0
@@ -27,8 +27,8 @@ enum argos_command_id {
     argos_id_set_theme_id = 0x06,
     argos_id_get_tap_dance = 0x07,
     argos_id_set_tap_dance = 0x08,
-    argos_id_capture_tap_dance_key = 0x09,
-    argos_id_delete_tap_dance_key = 0x0A,
+    argos_id_capture_tap_dance_key = 0x09, // legacy, not used anymore
+    argos_id_delete_tap_dance_key = 0x0A, // legacy, not used anymore
     argos_id_set_dpi = 0x0B,
     argos_id_get_pointing_device_info = 0x0C,
     argos_id_set_sniping_dpi = 0x0D,
@@ -38,6 +38,8 @@ enum argos_command_id {
     argos_id_set_global_tapping_term = 0x11,
     argos_id_set_global_combo_term = 0x12,
     argos_id_set_tap_dance_keycode = 0x13,
+    argos_id_get_rgb_matrix_led_at_position = 0x14,
+    argos_id_set_rgb_matrix_led_at_position = 0x15,
 };
 
 // At the moment, we only support trackpads and trackballs (for Bastard Keyboards)
@@ -61,7 +63,7 @@ typedef struct PACKED {
     bool valid: 1; 
 } argos_combo_t;
 // If we modify the structure, we also need to modify its size in post_config.h
-_Static_assert(sizeof(argos_combo_t) <= 13, "Invalid size for argos_combo_t");
+_Static_assert(sizeof(argos_combo_t) <= 13, "Invalid size for argos_combo_t"); // this seems to big, change to 7 or 8?
 
 typedef struct PACKED {
     bool has_copied_qmk_config : 1;
@@ -71,6 +73,16 @@ typedef struct PACKED {
     uint16_t global_combo_term; // in ms
 } argos_config_t;
 _Static_assert(sizeof(argos_config_t) <= 7, "Invalid size for argos_config_t");
+
+typedef struct PACKED {
+    uint8_t r;
+    uint8_t g;
+    uint8_t b;
+    bool passthrough : 1;
+    bool on: 1;
+    bool custom: 1;
+} argos_rgb_t;
+_Static_assert(sizeof(argos_rgb_t) <= 5, "Invalid size for argos_rgb_t");
 
 #define ARGOS_TAPPING_TERM 175
 #define ARGOS_TAP_CODE_DELAY 10
